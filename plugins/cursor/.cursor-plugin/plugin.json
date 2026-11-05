@@ -1,0 +1,29 @@
+{
+  "name": "podyx",
+  "version": "0.1.0",
+  "description": "Podyx studio availability, bookings, packages, catalog and business reports",
+  "license": "MIT",
+  "mcpServers": "./mcp.json",
+  "variables": {
+    "type": "object",
+    "properties": {
+      "PODYX_API_KEY": {
+        "type": "string",
+        "title": "Podyx API key",
+        "description": "Studio Settings \u2192 API keys"
+      },
+      "PODYX_ENABLE_WRITES": {
+        "type": "string",
+        "enum": [
+          "false",
+          "true"
+        ],
+        "default": "false",
+        "description": "Enable mutation tools explicitly"
+      }
+    },
+    "required": [
+      "PODYX_API_KEY"
+    ]
+  }
+}

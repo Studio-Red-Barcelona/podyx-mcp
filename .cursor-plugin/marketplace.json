@@ -1,0 +1,13 @@
+{
+  "name": "podyx-community",
+  "owner": {
+    "name": "Podyx MCP contributors"
+  },
+  "plugins": [
+    {
+      "name": "podyx",
+      "source": "./dist/podyx-cursor",
+      "description": "Local Podyx studio tools"
+    }
+  ]
+}

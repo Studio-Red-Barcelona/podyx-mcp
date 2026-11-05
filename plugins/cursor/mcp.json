@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "podyx": {
+      "command": "node",
+      "args": [
+        "${CURSOR_PLUGIN_ROOT}/server/src/cli.mjs"
+      ],
+      "env": {
+        "PODYX_API_KEY": "${PODYX_API_KEY}",
+        "PODYX_ENABLE_WRITES": "${PODYX_ENABLE_WRITES}"
+      }
+    }
+  }
+}

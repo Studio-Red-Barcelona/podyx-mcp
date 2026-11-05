@@ -1,0 +1,25 @@
+{
+  "name": "podyx-mcp",
+  "version": "0.1.0",
+  "description": "Community MCP server for Podyx studio booking, catalog, packages and reporting",
+  "type": "module",
+  "license": "MIT",
+  "engines": {"node": ">=22"},
+  "bin": {"podyx-mcp": "src/cli.mjs"},
+  "files": ["src", "spec", "docs", "README.md", "LICENSE"],
+  "scripts": {
+    "start": "node src/cli.mjs",
+    "start:http": "node src/cli.mjs --http",
+    "test": "node --test",
+    "check": "node scripts/check.mjs",
+    "configs": "node scripts/client-configs.mjs",
+    "package:plugins": "node scripts/package-plugins.mjs",
+    "test:packages": "node scripts/smoke-packages.mjs",
+    "grok": "node scripts/grok.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "podyx",
+  "version": "0.1.0",
+  "description": "Podyx studio availability, bookings, packages, catalog and business reports",
+  "license": "MIT",
+  "mcpServers": "./mcp.json",
+  "requires_local_executor": true
+}
