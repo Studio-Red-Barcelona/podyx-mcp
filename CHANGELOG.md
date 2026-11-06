@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/Studio-Red-Barcelona/podyx-mcp/compare/v0.3.1...v0.4.0) (2026-11-06)
+
+
+### Features
+
+* schedule weekly Podyx specification updates ([#18](https://github.com/Studio-Red-Barcelona/podyx-mcp/issues/18)) ([bee3ab9](https://github.com/Studio-Red-Barcelona/podyx-mcp/commit/bee3ab97aa4be589188ac19d7bc0152e801778a5))
+
 ## [0.3.1](https://github.com/Studio-Red-Barcelona/podyx-mcp/compare/v0.3.0...v0.3.1) (2026-11-06)
 
 
