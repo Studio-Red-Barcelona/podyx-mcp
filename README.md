@@ -1,8 +1,8 @@
 # Podyx MCP
 
-[![Checks](https://github.com/d3rky/podyx-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/d3rky/podyx-mcp/actions/workflows/test.yml)
+[![Checks](https://github.com/Studio-Red-Barcelona/podyx-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/Studio-Red-Barcelona/podyx-mcp/actions/workflows/test.yml)
 
-[Русский](README.ru.md) · [Client setup](docs/clients.md) · [Tools](docs/tools.md) · [Releases](https://github.com/d3rky/podyx-mcp/releases) · [Contributing](CONTRIBUTING.md) · [Agent instructions](AGENTS.md)
+[Русский](README.ru.md) · [Client setup](docs/clients.md) · [Tools](docs/tools.md) · [Releases](https://github.com/Studio-Red-Barcelona/podyx-mcp/releases) · [Contributing](CONTRIBUTING.md) · [Agent instructions](AGENTS.md)
 
 Unofficial, local-first community MCP server for studio owners using Podyx. Connect your own studio key and ask an assistant about availability, bookings, clients, packages, prices and business performance.
 
@@ -12,10 +12,10 @@ Unofficial, local-first community MCP server for studio owners using Podyx. Conn
 
 Requires Node.js **22+**, npm and a Podyx studio key. Use a key with only the permissions you need. API access must be enabled for the studio; creating commercial entries may need additional Podyx enablement.
 
-Download a client plugin from [Releases](https://github.com/d3rky/podyx-mcp/releases) once a release is published, or use this source checkout:
+Download a client plugin from [Releases](https://github.com/Studio-Red-Barcelona/podyx-mcp/releases) once a release is published, or use this source checkout:
 
 ```sh
-git clone https://github.com/d3rky/podyx-mcp.git
+git clone https://github.com/Studio-Red-Barcelona/podyx-mcp.git
 cd podyx-mcp
 npm ci
 mkdir -p ~/.config/podyx-mcp

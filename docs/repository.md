@@ -1,6 +1,6 @@
 # Repository governance
 
-Repository: [d3rky/podyx-mcp](https://github.com/d3rky/podyx-mcp). This is a public, unofficial community project. Maintainer and default CODEOWNER: **@d3rky**.
+Repository: [Studio-Red-Barcelona/podyx-mcp](https://github.com/Studio-Red-Barcelona/podyx-mcp). This is a public, unofficial community project. Maintainer and default CODEOWNER: **@d3rky**.
 
 ## Protected branches
 

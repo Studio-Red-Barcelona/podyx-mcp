@@ -13,10 +13,10 @@ PODYX_API_KEY=YOUR_PODYX_API_KEY
 PODYX_ENABLE_WRITES=false
 ```
 
-Скачайте подходящий плагин из [GitHub Releases](https://github.com/d3rky/podyx-mcp/releases), когда появится первый релиз. Для работы из исходников:
+Скачайте подходящий плагин из [GitHub Releases](https://github.com/Studio-Red-Barcelona/podyx-mcp/releases), когда появится первый релиз. Для работы из исходников:
 
 ```sh
-git clone https://github.com/d3rky/podyx-mcp.git
+git clone https://github.com/Studio-Red-Barcelona/podyx-mcp.git
 cd podyx-mcp
 npm ci --ignore-scripts
 npm run configs

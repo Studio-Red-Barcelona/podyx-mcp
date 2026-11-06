@@ -41,10 +41,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/d3rky/podyx-mcp.git"
+    "url": "git+https://github.com/Studio-Red-Barcelona/podyx-mcp.git"
   },
-  "homepage": "https://github.com/d3rky/podyx-mcp#readme",
+  "homepage": "https://github.com/Studio-Red-Barcelona/podyx-mcp#readme",
   "bugs": {
-    "url": "https://github.com/d3rky/podyx-mcp/issues"
+    "url": "https://github.com/Studio-Red-Barcelona/podyx-mcp/issues"
   }
 }

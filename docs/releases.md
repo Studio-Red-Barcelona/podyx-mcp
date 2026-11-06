@@ -14,7 +14,7 @@ Normal feature merges update the pending release PR; they do not publish a relea
 
 ## One-time GitHub setup
 
-The public repository is [d3rky/podyx-mcp](https://github.com/d3rky/podyx-mcp), with `main` as the release branch. Inspect current runs in [GitHub Actions](https://github.com/d3rky/podyx-mcp/actions). Repository governance and the protected-branch rules are documented in [repository.md](repository.md).
+The public repository is [Studio-Red-Barcelona/podyx-mcp](https://github.com/Studio-Red-Barcelona/podyx-mcp), with `main` as the release branch. Inspect current runs in [GitHub Actions](https://github.com/Studio-Red-Barcelona/podyx-mcp/actions). Repository governance and the protected-branch rules are documented in [repository.md](repository.md).
 
 No personal token or additional secret is required. The release job uses the short-lived **`GITHUB_TOKEN`** provided automatically by GitHub Actions. Its job-scoped permissions allow contents, issues, pull requests and explicit workflow dispatches.
 
