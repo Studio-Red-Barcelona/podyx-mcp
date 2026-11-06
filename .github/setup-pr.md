@@ -3,6 +3,7 @@ Adds @d3rky as the default CODEOWNER and documents how to use, contribute to and
 - Adds English/Russian README navigation, AGENTS.md and repository governance documentation.
 - Records the protected-branch ruleset, including reviewed PRs, required CI checks and squash merging.
 - Adds weekly Dependabot updates and a concise PR template.
+- Fixes the release-check dispatcher to consume Release Please's `prs` JSON output instead of the `prs_created` boolean, with a regression assertion.
 - Adds a narrowly scoped manual setup-PR job so the PR can be authored by GitHub Actions and reviewed by @d3rky; it never approves or merges anything.
 
 Validation: existing MCP tests, version/schema checks and independently extracted plugin package smoke tests run before this PR is opened.
