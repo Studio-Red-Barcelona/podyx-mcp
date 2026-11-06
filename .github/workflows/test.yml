@@ -105,7 +105,7 @@ jobs:
         if: steps.current.outputs.ready == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_PRS: ${{ steps.release.outputs.prs_created }}
+          RELEASE_PRS: ${{ steps.release.outputs.prs }}
         run: node scripts/dispatch-release-checks.mjs
       - uses: actions/download-artifact@v4
         if: steps.current.outputs.ready == 'true'
@@ -117,3 +117,25 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/upload-release-assets.mjs
+
+  open_setup_pr:
+    name: Open maintainer setup PR
+    needs: [test, packages]
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/chore/add-codeowners'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Create bot-authored setup PR for maintainer review
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if ! gh pr view chore/add-codeowners --json url --jq .url; then
+            gh pr create --base main --head chore/add-codeowners --title 'chore: add code ownership and repository guidance' --body-file .github/setup-pr.md
+            gh pr edit chore/add-codeowners --add-reviewer d3rky
+          fi

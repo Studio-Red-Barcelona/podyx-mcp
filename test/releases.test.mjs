@@ -73,7 +73,8 @@ test('PRs and main run tests and packaging; release is gated behind both', async
   const release = workflow.jobs.release.steps.find((step) => step.uses?.startsWith('googleapis/release-please-action@'));
   assert.equal(release.with.token, '${{ github.token }}');
   assert.equal(workflow.jobs.release.permissions.actions, 'write');
-  assert(workflow.jobs.release.steps.some((step) => step.run === 'node scripts/dispatch-release-checks.mjs'));
+  const dispatch = workflow.jobs.release.steps.find((step) => step.run === 'node scripts/dispatch-release-checks.mjs');
+  assert.equal(dispatch.env.RELEASE_PRS, '${{ steps.release.outputs.prs }}');
   assert.equal(release.if, "steps.current.outputs.ready == 'true'");
 });
 

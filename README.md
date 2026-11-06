@@ -1,5 +1,9 @@
 # Podyx MCP
 
+[![Checks](https://github.com/Studio-Red-Barcelona/podyx-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/Studio-Red-Barcelona/podyx-mcp/actions/workflows/test.yml)
+
+[Русский](README.ru.md) · [Client setup](docs/clients.md) · [Tools](docs/tools.md) · [Releases](https://github.com/Studio-Red-Barcelona/podyx-mcp/releases) · [Contributing](CONTRIBUTING.md) · [Agent instructions](AGENTS.md)
+
 Unofficial, local-first community MCP server for studio owners using Podyx. Connect your own studio key and ask an assistant about availability, bookings, clients, packages, prices and business performance.
 
 **150 API-backed tools: 65 reads/previews enabled by default and 85 opt-in mutations.** Full v2 operations plus v1 reads and reports, without duplicate v1/headless routes. No Kommo dependency. Includes MCP prompts for a monthly review, finding a session time and preparing a booking change.
@@ -8,7 +12,11 @@ Unofficial, local-first community MCP server for studio owners using Podyx. Conn
 
 Requires Node.js **22+**, npm and a Podyx studio key. Use a key with only the permissions you need. API access must be enabled for the studio; creating commercial entries may need additional Podyx enablement.
 
+Download a client plugin from [Releases](https://github.com/Studio-Red-Barcelona/podyx-mcp/releases) once a release is published, or use this source checkout:
+
 ```sh
+git clone https://github.com/Studio-Red-Barcelona/podyx-mcp.git
+cd podyx-mcp
 npm ci
 mkdir -p ~/.config/podyx-mcp
 cp .env.example ~/.config/podyx-mcp/.env
@@ -90,3 +98,5 @@ npm test
 Tests cover schema validation, safe defaults, request construction, error/redaction behavior, uncertain-write recovery, the local Grok bridge, real MCP stdio and real Streamable HTTP on loopback. Upstream behavior is mocked: **live studio operations and client UIs require testing with your own key/account**. No production studio data is bundled.
 
 API snapshots were retrieved on 2026-11-05. Specs are vendored so startup needs no documentation download. Changes to upstream API contracts require review and a new release. MIT for original implementation; see [NOTICE.md](NOTICE.md) for upstream material.
+
+The public repository is maintained by **@d3rky**. Changes use reviewed PRs with passing checks; see [repository governance](docs/repository.md). This project is not affiliated with or endorsed by Podyx.

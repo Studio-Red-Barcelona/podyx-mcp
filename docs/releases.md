@@ -14,7 +14,7 @@ Normal feature merges update the pending release PR; they do not publish a relea
 
 ## One-time GitHub setup
 
-The local repository must first be pushed to a GitHub repository with `main` as its release branch. No GitHub remote was configured when this pipeline was implemented, so creating PRs/releases has not yet been exercised against a real repository.
+The public repository is [Studio-Red-Barcelona/podyx-mcp](https://github.com/Studio-Red-Barcelona/podyx-mcp), with `main` as the release branch. Inspect current runs in [GitHub Actions](https://github.com/Studio-Red-Barcelona/podyx-mcp/actions). Repository governance and the protected-branch rules are documented in [repository.md](repository.md).
 
 No personal token or additional secret is required. The release job uses the short-lived **`GITHUB_TOKEN`** provided automatically by GitHub Actions. Its job-scoped permissions allow contents, issues, pull requests and explicit workflow dispatches.
 
@@ -41,7 +41,7 @@ Do not require the release job: it intentionally does not run on PRs. Enable the
 - `feat!: change the tool interface` or a `BREAKING CHANGE:` footer → breaking bump; while below 1.0.0, breaking changes bump the minor version.
 - `chore(main): release ...` is the generated release PR, not an ordinary feature.
 
-Current source version `0.1.0` is the initial baseline; the first public release is configured as `0.1.0` when no earlier release exists. Later releases follow the committed history. Version updates belong in release PRs; manually changing just one plugin version fails CI.
+Current source version `0.1.0` is the baseline. Release Please computes the next version from the release manifest and eligible Conventional Commits; the first public release can therefore be newer than that baseline. Version updates belong in release PRs; manually changing just one plugin version fails CI.
 
 Runtime server metadata, the Grok bridge and archive filenames read the root package version, so they need no textual version replacement. The JSON `extra-files` entries in `release-please-config.json` update all plugin and marketplace manifests. Tests ensure no manifest is forgotten.
 
