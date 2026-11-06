@@ -93,7 +93,7 @@ jobs:
           else
             echo "A newer main commit has its own checks; leaving release work to that run."
           fi
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
         id: release
         if: steps.current.outputs.ready == 'true'
         with:
