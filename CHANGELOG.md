@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/Studio-Red-Barcelona/podyx-mcp/compare/v0.3.0...v0.3.1) (2026-11-06)
+
+
+### Bug Fixes
+
+* keep Docker dependency updates on Node 24 ([#16](https://github.com/Studio-Red-Barcelona/podyx-mcp/issues/16)) ([d530a85](https://github.com/Studio-Red-Barcelona/podyx-mcp/commit/d530a85a9df1fa419aea0b60f993ff49fe1edb96))
+
 ## [0.3.0](https://github.com/Studio-Red-Barcelona/podyx-mcp/compare/v0.2.0...v0.3.0) (2026-11-06)
 
 
