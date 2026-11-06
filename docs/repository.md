@@ -18,6 +18,8 @@ CODEOWNERS is evaluated from the PR's base branch. The first ownership PR introd
 
 ## Automation and security
 
+Docker adds required `Docker lint` and `Docker checks` statuses. The latter aggregates native amd64/arm64 builds, container smoke tests and vulnerability scans. GHCR publication is limited to verified main releases. Dependabot monitors base-image updates; see [Docker operations](docker.md).
+
 - Tests and packaging run on PRs and pushes to `main`.
 - Releases require successful checks and a separately reviewed release PR.
 - Actions use least-privilege job permissions and the built-in GitHub token; no extra PAT is required.

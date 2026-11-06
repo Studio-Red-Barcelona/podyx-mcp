@@ -29,7 +29,8 @@
     "configs": "node scripts/client-configs.mjs",
     "package:plugins": "node scripts/package-plugins.mjs",
     "test:packages": "node scripts/smoke-packages.mjs",
-    "grok": "node scripts/grok.mjs"
+    "grok": "node scripts/grok.mjs",
+    "test:docker": "node scripts/smoke-docker.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.2",

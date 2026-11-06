@@ -5,14 +5,23 @@
   "bypass_actors": [],
   "conditions": {
     "ref_name": {
-      "include": ["refs/heads/main", "refs/heads/master"],
+      "include": [
+        "refs/heads/main",
+        "refs/heads/master"
+      ],
       "exclude": []
     }
   },
   "rules": [
-    { "type": "deletion" },
-    { "type": "non_fast_forward" },
-    { "type": "required_linear_history" },
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "required_linear_history"
+    },
     {
       "type": "pull_request",
       "parameters": {
@@ -21,7 +30,9 @@
         "require_last_push_approval": false,
         "required_approving_review_count": 1,
         "required_review_thread_resolution": true,
-        "allowed_merge_methods": ["squash"]
+        "allowed_merge_methods": [
+          "squash"
+        ]
       }
     },
     {
@@ -30,9 +41,26 @@
         "strict_required_status_checks_policy": true,
         "do_not_enforce_on_create": false,
         "required_status_checks": [
-          { "context": "Test (Node 22)", "integration_id": 15368 },
-          { "context": "Test (Node 24)", "integration_id": 15368 },
-          { "context": "Package smoke tests", "integration_id": 15368 }
+          {
+            "context": "Test (Node 22)",
+            "integration_id": 15368
+          },
+          {
+            "context": "Test (Node 24)",
+            "integration_id": 15368
+          },
+          {
+            "context": "Package smoke tests",
+            "integration_id": 15368
+          },
+          {
+            "context": "Docker lint",
+            "integration_id": 15368
+          },
+          {
+            "context": "Docker checks",
+            "integration_id": 15368
+          }
         ]
       }
     }

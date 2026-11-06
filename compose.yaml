@@ -1,0 +1,29 @@
+services:
+  podyx:
+    image: ${PODYX_IMAGE:-ghcr.io/studio-red-barcelona/podyx-mcp:latest}
+    command: ["--http"]
+    env_file:
+      - ${PODYX_ENV_FILE:?Set PODYX_ENV_FILE to an absolute private env file}
+    environment:
+      PODYX_HTTP_HOST: 0.0.0.0
+      PODYX_STATE_DIR: /var/lib/podyx-mcp
+    ports:
+      - "127.0.0.1:${PODYX_HTTP_PORT:-3333}:3333"
+    volumes:
+      - podyx-state:/var/lib/podyx-mcp
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    init: true
+    restart: unless-stopped
+    pids_limit: 128
+    mem_limit: 256m
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3333/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  podyx-state:

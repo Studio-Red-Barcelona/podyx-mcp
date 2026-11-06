@@ -32,6 +32,6 @@ export async function startHttp(config, dependencies = {}) {
   });
   server.requestTimeout = 35000;
   server.headersTimeout = 10000;
-  await new Promise((resolve, reject) => { server.once('error', reject); server.listen(config.port, '127.0.0.1', resolve); });
+  await new Promise((resolve, reject) => { server.once('error', reject); server.listen(config.port, config.httpHost || '127.0.0.1', resolve); });
   return server;
 }

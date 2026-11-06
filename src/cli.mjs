@@ -20,7 +20,7 @@ if (args.includes('--help')) {
     const config = readConfig();
     if (args.includes('--http')) {
       const http = await startHttp(config);
-      console.error(`Podyx MCP HTTP listening at http://127.0.0.1:${http.address().port}/mcp`);
+      console.error(`Podyx MCP HTTP listening at http://${config.httpHost}:${http.address().port}/mcp`);
       for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => http.close(() => process.exit(0)));
     } else {
       const server = createServer(config);

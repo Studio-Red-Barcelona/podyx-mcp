@@ -1,5 +1,14 @@
 version: 2
 updates:
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    reviewers: [d3rky]
+    commit-message:
+      prefix: chore
+      include: scope
   - package-ecosystem: npm
     directory: /
     schedule:
