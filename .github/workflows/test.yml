@@ -54,7 +54,7 @@ jobs:
       - run: npm run test:packages
       - run: npm pack --ignore-scripts --pack-destination dist
       - run: node scripts/checksums.mjs
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: release-assets-${{ github.sha }}
           path: |
