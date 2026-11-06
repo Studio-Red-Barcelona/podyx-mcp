@@ -1,0 +1,72 @@
+# Releases and CI
+
+All clients ship together under one version. The OpenAI package serves Codex and compatible ChatGPT desktop use; the Grok adapter uses the server's package version. They are not separate independently versioned products.
+
+## What happens automatically
+
+1. A PR targeting `main` runs the **Checks** workflow: Conventional Commit title validation, lockfile install, version consistency, API/schema checks, generated-document drift check and tests on Node.js 22 and 24.
+2. If tests pass, **Package smoke tests** builds every plugin ZIP, extracts each into an independent temporary directory and initializes it through MCP. It also creates the installable npm tarball and SHA-256 checksums. These files are kept as a workflow artifact for 14 days.
+3. After any push/merge to `main`, the same checks and packaging run again against the actual resulting commit. No release job runs from a PR or fork.
+4. Only after both test jobs and packaging succeed does Release Please create or update one release PR from Conventional Commits. That PR updates `package.json`, the lockfile, every plugin manifest, the marketplace version entries, `.release-please-manifest.json` and `CHANGELOG.md`.
+5. The release PR receives the same PR checks. Review and merge it; the next successful `main` run creates `vX.Y.Z` and a GitHub Release whose notes come from the reviewed changelog. The already tested ZIPs, npm tarball and `SHA256SUMS` are attached from that exact run, without rebuilding them after release.
+
+Normal feature merges update the pending release PR; they do not publish a release. Documentation-only changes may not require a new release. There is no automatic merge, npm registry publication or vendor marketplace submission.
+
+## One-time GitHub setup
+
+The local repository must first be pushed to a GitHub repository with `main` as its release branch. No GitHub remote was configured when this pipeline was implemented, so creating PRs/releases has not yet been exercised against a real repository.
+
+Add repository Actions secret **`RELEASE_PLEASE_TOKEN`** with a fine-grained personal access token restricted to this repository and these repository permissions:
+
+- Contents: read and write (release branch, tag and release).
+- Pull requests: read and write (create/update the release PR).
+- Issues: read and write (release lifecycle labels).
+
+Use the repository owner's approved automation identity and rotate/revoke the token as appropriate. Never commit the token. A GitHub App can replace the PAT by generating an installation token inside the workflow; this repository currently expects the PAT secret, not a manually stored short-lived App token.
+
+The built-in `GITHUB_TOKEN` is used only for same-run artifact upload, release asset attachment and safe lookups. It is deliberately **not** the release-PR author token: PRs created with it do not trigger normal PR workflows. A missing release token fails the release job with an explicit setup message, while ordinary PR checks do not need that secret.
+
+If repository/organization policy blocks bot-created PRs, enable the corresponding Actions permission or have an administrator permit the selected automation identity. See [Release Please authentication requirements](https://github.com/googleapis/release-please-action#github-credentials).
+
+## Make checks mandatory before merge
+
+The workflow runs checks; a GitHub branch ruleset makes them mandatory. In repository **Settings → Rules → Rulesets** protect `main`, require pull requests and these status checks:
+
+- `Test (Node 22)`
+- `Test (Node 24)`
+- `Package smoke tests`
+
+Do not require the release job: it intentionally does not run on PRs. Enable the rule that the PR branch must be up to date if desired. Allow squash merging and configure its default commit message to use the PR title. The required-title check provides a Conventional Commit subject; a merge strategy using arbitrary commit messages can otherwise prevent automatic version selection.
+
+## Commit / PR titles and versioning
+
+- `fix: handle expired keys` → patch bump.
+- `feat: add a report` → minor bump.
+- `feat!: change the tool interface` or a `BREAKING CHANGE:` footer → breaking bump; while below 1.0.0, breaking changes bump the minor version.
+- `chore(main): release ...` is the generated release PR, not an ordinary feature.
+
+Current source version `0.1.0` is the initial baseline; the first public release is configured as `0.1.0` when no earlier release exists. Later releases follow the committed history. Version updates belong in release PRs; manually changing just one plugin version fails CI.
+
+Runtime server metadata, the Grok bridge and archive filenames read the root package version, so they need no textual version replacement. The JSON `extra-files` entries in `release-please-config.json` update all plugin and marketplace manifests. Tests ensure no manifest is forgotten.
+
+## Output files
+
+Each release contains:
+
+```text
+podyx-cursor-X.Y.Z.zip
+podyx-claude-X.Y.Z.zip
+podyx-openai-X.Y.Z.zip
+podyx-mcp-X.Y.Z.tgz
+SHA256SUMS
+```
+
+Users can pin the GitHub tag or install the tarball through npm/npx without a working checkout. Node.js and their own studio key are still required. Publishing to npm would be an additional pipeline with separate registry credentials; it is not implied by creating a GitHub Release.
+
+## Retry and recovery
+
+If asset upload fails after Release Please has created the release, rerun the workflow jobs while that commit is still the tip of `main`. The uploader finds the release's actual Git tag, checks that it resolves to the checked commit (including annotated tags), verifies checksums and replaces missing/partial assets with `--clobber`. It never attaches files to an older release from an unrelated feature commit. If `main` has moved on, download the successful original artifact and attach it to the matching tag manually.
+
+A superseded main run skips release management and leaves it to the newer commit's checks. Concurrent `main` runs are not cancelled halfway through publication; obsolete PR checks may be cancelled.
+
+Local validation can prove version updates, workflow syntax, artifact packaging and protocol startup. Creating the actual PR, triggering GitHub checks and publishing a real tag/release require the configured GitHub repository and token.

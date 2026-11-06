@@ -1,17 +1,120 @@
-name: Test
-on: [push, pull_request]
+name: Checks
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   test:
+    name: Test (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node: [22, 24]
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: npm
+      - run: node scripts/check-pr-title.mjs
       - run: npm ci --ignore-scripts
       - run: npm run check
+      - run: git diff --exit-code -- docs/tools.md
       - run: npm test
+
+  packages:
+    name: Package smoke tests
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run package:plugins
+      - run: npm run test:packages
+      - run: npm pack --ignore-scripts --pack-destination dist
+      - run: node scripts/checksums.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-assets-${{ github.sha }}
+          path: |
+            dist/*.zip
+            dist/*.tgz
+            dist/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: Release PR / GitHub Release
+    needs: [test, packages]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require a token that triggers PR checks
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        run: |
+          if [ -z "$RELEASE_TOKEN" ]; then
+            echo "::error::Add RELEASE_PLEASE_TOKEN (fine-grained PAT with Contents, Issues and Pull requests write). The default GITHUB_TOKEN does not trigger checks on generated release PRs. See docs/releases.md."
+            exit 1
+          fi
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Skip a superseded main commit
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)
+          if [ "$head_sha" = "$GITHUB_SHA" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "A newer main commit has its own checks; leaving release work to that run."
+          fi
+      - uses: googleapis/release-please-action@v4
+        id: release
+        if: steps.current.outputs.ready == 'true'
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          target-branch: main
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+      - uses: actions/download-artifact@v4
+        if: steps.current.outputs.ready == 'true'
+        with:
+          name: release-assets-${{ github.sha }}
+          path: dist
+      - name: Attach verified archives (also repairs interrupted uploads)
+        if: steps.current.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/upload-release-assets.mjs

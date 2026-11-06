@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import { operations, visibleOperations } from '../src/catalog.mjs';
+import { fileURLToPath } from 'node:url';
+import { checkVersions } from './versions.mjs';
+
+await checkVersions(fileURLToPath(new URL('../', import.meta.url)));
 
 for (const operation of operations) {
   assert.match(operation.name, /^[a-z0-9_]{1,64}$/);

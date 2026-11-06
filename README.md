@@ -75,6 +75,10 @@ npm run test:packages
 
 Repository marketplaces are included for Cursor, Claude Code and OpenAI; build packages before using them. Public directory submission, signing, OAuth hosting and account-side installation are separate from building a local package.
 
+## Automated releases
+
+PRs and merges to `main` run tests on Node.js 22/24, enforce matching plugin versions and build/test all release archives. After successful main checks, Release Please opens a version/changelog PR. Merging that PR produces the GitHub tag and release with the tested archives. Configure the GitHub remote, `RELEASE_PLEASE_TOKEN` and branch rules once; see **[release pipeline and required checks](docs/releases.md)**.
+
 ## Development and status
 
 ```sh

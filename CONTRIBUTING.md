@@ -1,5 +1,7 @@
 # Contributing
 
+Use Conventional Commit PR titles and squash-merge with that title (`feat: ...`, `fix: ...`). Versions and changelog entries are maintained in the automated release PR; do not bump a single plugin by hand. See [release workflow](docs/releases.md).
+
 Use Node.js 22+, run `npm ci`, `npm run check` and `npm test`. Tests must not depend on a production studio, personal customer data or real payments. Verify mutations against Podyx's configured test environment before claiming live support.
 
 Keep default mode read-only. When adding a route, review the actual method semantics: POST quotes are reads, financial reports and approvals are writes. Preserve exact decimal strings, currency, pagination, timezone, idempotency and independent payment/approval/fulfillment state.

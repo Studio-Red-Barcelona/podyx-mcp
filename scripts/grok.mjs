@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { runGrok } from '../src/grok-bridge.mjs';
+import { version } from '../src/version.mjs';
 
 const envFile = process.env.PODYX_ENV_FILE || join(homedir(), '.config', 'podyx-mcp', '.env');
 if (existsSync(envFile)) process.loadEnvFile(envFile);
@@ -14,7 +15,7 @@ if (!process.env.XAI_API_KEY || !process.env.GROK_MODEL || !prompt) {
   console.error('Set XAI_API_KEY and GROK_MODEL; run node scripts/grok.mjs "your request". Uses the paid xAI API.');
   process.exitCode = 1;
 } else {
-  const client = new Client({ name: 'podyx-grok-local', version: '0.1.0' });
+  const client = new Client({ name: 'podyx-grok-local', version });
   try {
     const transport = new StdioClientTransport({ command: process.execPath,
       args: [fileURLToPath(new URL('../src/cli.mjs', import.meta.url))],

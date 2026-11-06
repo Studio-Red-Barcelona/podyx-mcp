@@ -60,7 +60,7 @@ The tunnel client's OpenAI control-plane credentials are configured separately, 
 
 ### Desktop plugin package
 
-`dist/podyx-openai-0.1.0.zip` is also the OpenAI desktop plugin package. Local/repo installation depends on the desktop surface. The package declares that a local executor is required. Publishing a desktop-only plugin in the public directory currently requires OpenAI partner allowlisting and review; merely distributing this ZIP does not bypass that requirement. Use the private tunnel route if your surface cannot load a local package.
+The versioned `dist/podyx-openai-<version>.zip` is also the OpenAI desktop plugin package. Local/repo installation depends on the desktop surface. The package declares that a local executor is required. Publishing a desktop-only plugin in the public directory currently requires OpenAI partner allowlisting and review; merely distributing this ZIP does not bypass that requirement. Use the private tunnel route if your surface cannot load a local package.
 
 Sources: [custom MCP connection](https://developers.openai.com/api/docs/guides/custom-mcp-server), [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels), [desktop-only plugins](https://developers.openai.com/plugins/deploy/desktop-only).
 
