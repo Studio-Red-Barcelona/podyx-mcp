@@ -38,6 +38,10 @@ npm run configs
 
 Merge the appropriate file from `generated/` into your client's settings. They contain absolute local paths and no secret values. The client launches the server on demand. Running `npm start` manually waits for MCP input on stdin; this is normal.
 
+## Optional Docker distribution
+
+Docker runs the same MCP without a local Node.js installation or source checkout. Release images support amd64/arm64, run as non-root and keep their journal in a volume. Both stdio clients and a private HTTP Compose deployment are supported. See **[Docker setup, deployment and updates](docs/docker.md)**. GHCR images become available after the first release containing this support.
+
 ## Clients
 
 | Client | Local connection | Included integration |

@@ -4,6 +4,8 @@ Checked against public client documentation on 2026-11-05. An installable packag
 
 ## Shared private configuration
 
+For container-based connections see [Docker setup](docker.md). `npm run configs` additionally emits `docker-mcp.json` and `codex-docker.toml`. These launch the versioned GHCR image with a private env file and persistent state volume. Native plugin packages remain unchanged.
+
 The server loads `~/.config/podyx-mcp/.env` unless `PODYX_ENV_FILE` specifies another file. Set `PODYX_API_KEY` there. Existing environment variables take precedence. Keep this file private and outside the repository. On Windows, the default is under the user's home directory too; create `.config/podyx-mcp/.env` there. Use an absolute Node executable in desktop configs if Node is not on the GUI application's PATH.
 
 Run `npm run configs` after cloning/moving the repository. Files in `generated/` use this checkout's absolute path and actual Node executable. Merge entries into existing configs rather than replacing the whole file. Never put the example placeholder in a live configuration.

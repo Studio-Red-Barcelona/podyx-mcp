@@ -68,7 +68,7 @@ test('PRs and main run tests and packaging; release is gated behind both', async
   assert.deepEqual(workflow.jobs.test.strategy.matrix.node, [22, 24]);
   assert.equal(workflow.jobs.packages.needs, 'test');
   assert(workflow.jobs.packages.steps.some((step) => step.run === 'npm run test:packages'));
-  assert.deepEqual(workflow.jobs.release.needs, ['test', 'packages']);
+  assert.deepEqual(workflow.jobs.release.needs, ['test', 'packages', 'docker']);
   assert.equal(workflow.jobs.release.if, "github.event_name == 'push' && github.ref == 'refs/heads/main'");
   const release = workflow.jobs.release.steps.find((step) => step.uses?.startsWith('googleapis/release-please-action@'));
   assert.equal(release.with.token, '${{ github.token }}');

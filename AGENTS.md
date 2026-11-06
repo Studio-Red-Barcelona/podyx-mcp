@@ -35,6 +35,8 @@ PR titles must use Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, etc
 
 ## Versions and releases
 
+For Docker changes, run Hadolint, `docker build --check .`, Compose validation and `npm run test:docker` against a fresh image. Preserve the non-root user, allowlisted build context, read-only compatibility and persistent journal. Native HTTP defaults to loopback; `PODYX_HTTP_HOST=0.0.0.0` is an explicit container/network opt-in. PR jobs must not log in to GHCR or push images. Publication requires successful Docker checks and an existing release tag at the checked main commit, using the built-in GitHub token. Review `docs/docker.md` before changing deployment behavior.
+
 Release Please owns version bumps and `CHANGELOG.md` in a dedicated release PR. All plugins and marketplace entries share `package.json`'s version; runtime metadata and archive names derive from it. If adding a versioned component, update `release-please-config.json`, `scripts/versions.mjs` and release tests together.
 
 Releases use GitHub's built-in token and explicit dispatches for release-PR checks. No PAT is needed. Never auto-merge a release PR, publish to npm or change repository visibility unless the user has authorized that action. See `docs/releases.md` and `docs/repository.md` for the workflow and governance settings.

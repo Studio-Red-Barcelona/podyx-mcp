@@ -31,6 +31,8 @@ The workflow runs checks; a GitHub branch ruleset makes them mandatory. In repos
 - `Test (Node 22)`
 - `Test (Node 24)`
 - `Package smoke tests`
+- `Docker lint`
+- `Docker checks`
 
 Do not require the release job: it intentionally does not run on PRs. Enable the rule that the PR branch must be up to date if desired. Allow squash merging and configure its default commit message to use the PR title. The required-title check provides a Conventional Commit subject; a merge strategy using arbitrary commit messages can otherwise prevent automatic version selection.
 
@@ -46,6 +48,8 @@ Current source version `0.1.0` is the baseline. Release Please computes the next
 Runtime server metadata, the Grok bridge and archive filenames read the root package version, so they need no textual version replacement. The JSON `extra-files` entries in `release-please-config.json` update all plugin and marketplace manifests. Tests ensure no manifest is forgotten.
 
 ## Output files
+
+Releases containing Docker support also publish `ghcr.io/studio-red-barcelona/podyx-mcp` for amd64/arm64, tagged with the package version and `latest` for stable releases. Docker lint, native runtime tests and vulnerability scans gate the release. Publication runs in the same checked main workflow after verifying the release tag's commit; PRs never publish images. See [Docker operations](docker.md).
 
 Each release contains:
 

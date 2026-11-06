@@ -1,0 +1,12 @@
+# Allowlist the image inputs. Credentials, exports, Git history, tests and local
+# generated files must never enter the build context.
+**
+!Dockerfile
+!package.json
+!package-lock.json
+!src
+!src/**
+!spec
+!spec/**
+!LICENSE
+!NOTICE.md
