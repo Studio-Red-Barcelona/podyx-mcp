@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/Studio-Red-Barcelona/podyx-mcp/compare/v0.2.0...v0.3.0) (2026-11-06)
+
+
+### Features
+
+* add Docker distribution and release publishing ([#13](https://github.com/Studio-Red-Barcelona/podyx-mcp/issues/13)) ([10a618f](https://github.com/Studio-Red-Barcelona/podyx-mcp/commit/10a618f2df6e86e65bf622cbcb5c52f2a85063f5))
+
 ## [0.2.0](https://github.com/Studio-Red-Barcelona/podyx-mcp/compare/v0.1.0...v0.2.0) (2026-11-06)
 
 
