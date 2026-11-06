@@ -1,6 +1,6 @@
 # Tool reference
 
-Generated from the vendored Podyx OpenAPI snapshots (2026-11-05). 150 tools; 65 enabled by default.
+Generated from the vendored Podyx OpenAPI snapshots in `spec/`. 150 tools; 65 enabled by default.
 
 Arguments are grouped under `path`, `query`, and `body` according to the API contract. Writes additionally require `confirm: true` and a persisted UUID `idempotency_key`. Omit absent optional values; do not send null unless the schema permits it.
 

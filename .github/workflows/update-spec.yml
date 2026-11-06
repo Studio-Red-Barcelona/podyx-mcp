@@ -1,0 +1,80 @@
+name: Update Podyx specifications
+
+on:
+  schedule:
+    # Monday 08:17 UTC (09:17 Madrid in winter, 10:17 in summer).
+    - cron: '17 8 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: podyx-spec-sync
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Download public OpenAPI snapshots
+        run: node scripts/update-spec.mjs
+      - name: Validate tool schemas and regenerate reference
+        id: validate
+        continue-on-error: true
+        run: npm run check
+      - run: npm test
+        id: tests
+        continue-on-error: true
+      - run: git diff --check
+      - name: Open or update the specification PR
+        id: pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ github.token }}
+          branch: automation/podyx-spec-sync
+          base: main
+          add-paths: |
+            spec/openapi-v1.json
+            spec/openapi-v2.json
+            docs/tools.md
+          commit-message: 'feat: sync upstream Podyx API specifications'
+          title: 'feat: sync upstream Podyx API specifications'
+          body: |
+            Refresh the public Podyx OpenAPI v1/v2 snapshots and generated tool reference.
+
+            Schema validation: ${{ steps.validate.outcome }}. Tests: ${{ steps.tests.outcome }}.
+
+            Validation failures produce a draft PR for manual adaptation (for example, changed tool-count expectations). Review API changes, especially new write operations and breaking changes. Full Checks are dispatched separately using the built-in GitHub token. No automatic merge or studio API calls.
+          draft: ${{ steps.validate.outcome != 'success' || steps.tests.outcome != 'success' }}
+          reviewers: d3rky
+      - name: Explicitly dispatch full checks for the bot PR
+        if: steps.pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.pr.outputs.pull-request-number }}
+        run: |
+          branch=$(gh pr view "$PR_NUMBER" --json headRefName --jq .headRefName)
+          test "$branch" = automation/podyx-spec-sync
+          gh workflow run test.yml --ref "$branch"
+      - name: Report incompatible upstream changes
+        if: steps.validate.outcome != 'success' || steps.tests.outcome != 'success'
+        run: |
+          echo 'Upstream changes need manual adaptation; inspect the draft PR and failed validation steps.'
+          exit 1

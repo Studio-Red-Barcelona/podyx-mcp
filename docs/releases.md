@@ -70,3 +70,13 @@ If asset upload fails after Release Please has created the release, rerun the wo
 A superseded main run skips release management and leaves it to the newer commit's checks. Concurrent `main` runs are not cancelled halfway through publication; obsolete PR checks may be cancelled.
 
 Local validation can prove version updates, workflow syntax, artifact packaging and protocol startup. Creating the actual PR, triggering GitHub checks and publishing a real tag/release require the configured GitHub repository with Actions enabled.
+
+## Weekly upstream specification updates
+
+[Update Podyx specifications](../.github/workflows/update-spec.yml) runs every Monday at 08:17 UTC (09:17 Madrid in winter, 10:17 in summer), or manually from Actions. Scheduled starts can be delayed by GitHub.
+
+It downloads the public v1/v2 OpenAPI documents without a studio key, rejects failed/invalid/oversized responses, and ignores formatting or object-key-order changes. Changed snapshots are checked with the current MCP generator and tests before one reusable PR is opened or updated. The PR includes `spec/` and the regenerated tool reference. No change means no new PR. Incompatible upstream schemas or failing tests (including changed tool-count expectations) produce a draft PR and fail the Action for maintainer investigation. Download failures leave snapshots untouched and do not open a PR.
+
+Full Checks (including packaging and Docker scans) are explicitly dispatched on the bot branch because PR events from `GITHUB_TOKEN` do not trigger them. The main-only release gate remains in place. CODEOWNER approval and required checks still apply; the workflow never merges. After merging the spec PR, the normal release process distributes the updated tools. Existing pinned installations require an update to that release.
+
+To reproduce locally: `node scripts/update-spec.mjs`, then `npm run check` and `npm test`.
