@@ -79,6 +79,8 @@ For Compose before a release exists, build locally and set `PODYX_IMAGE=podyx-mc
 
 Every PR/main run checks Hadolint (warnings fail), Compose configuration, native amd64/arm64 builds, real container smoke tests and Trivy scans. Scans fail on fixable HIGH/CRITICAL vulnerabilities. `Docker checks` aggregates both architectures and scanning; it fails if any prerequisite fails. The recorded protected-branch rules add `Docker lint` and `Docker checks` to required statuses. Dependabot monitors base-image tags/digests and Docker GitHub Actions.
 
+The container uses Node 24. Dependabot can update its base-image digest and versions within the current major, but ignores major Node upgrades. Moving to another Node major requires a separate maintainer PR with compatibility and security checks.
+
 Publishing runs only after successful main checks and verification that a GitHub Release tag points to the exact checked commit. It runs in the same workflow, avoiding the built-in token's release-event trigger limitation. PR jobs never log in to GHCR or push images. The publisher uses `GITHUB_TOKEN` with `packages: write` only in its own job.
 
 Published images include both architectures, OCI labels, BuildKit SBOM and provenance attestations. The job summary records the immutable `image@sha256:...` reference. Re-run failed release jobs to recover interrupted publication. Publishing an image does not restart a user's server; deployment remains operator-controlled through Compose.
