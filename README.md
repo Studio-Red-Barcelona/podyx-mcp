@@ -8,6 +8,13 @@ Unofficial, local-first community MCP server for studio owners using Podyx. Conn
 
 **150 API-backed tools: 65 reads/previews enabled by default and 85 opt-in mutations.** Full v2 operations plus v1 reads and reports, without duplicate v1/headless routes. No Kommo dependency. Includes MCP prompts for a monthly review, finding a session time and preparing a booking change.
 
+## Podyx and API reference
+
+- [Podyx website](https://www.podyx.com/)
+- [Interactive API v2 reference](https://docs.podyx.com/api/docs?version=2)
+- [OpenAPI v2 specification (JSON)](https://docs.podyx.com/api/openapi-v2.json)
+- [Legacy API v1 specification (JSON)](https://docs.podyx.com/api/openapi.json), used for reports and legacy reads.
+
 ## Quick start
 
 Requires Node.js **22+**, npm and a Podyx studio key. Use a key with only the permissions you need. API access must be enabled for the studio; creating commercial entries may need additional Podyx enablement.

@@ -4,6 +4,13 @@
 
 **150 инструментов. По умолчанию включены 65 инструментов чтения и предварительного расчёта; изменения включаются отдельно.**
 
+## Podyx и документация API
+
+- [Сайт Podyx](https://www.podyx.com/)
+- [Интерактивный справочник API v2](https://docs.podyx.com/api/docs?version=2)
+- [Спецификация OpenAPI v2 (JSON)](https://docs.podyx.com/api/openapi-v2.json)
+- [Спецификация API v1 (JSON)](https://docs.podyx.com/api/openapi.json) — используется для отчётов и чтения данных через прежнюю версию API.
+
 ## Подключение
 
 Нужны Node.js 22+ и свой API-ключ из **Podyx → Settings → API keys**. Ключ хранится на вашем компьютере, например в `~/.config/podyx-mcp/.env`:
