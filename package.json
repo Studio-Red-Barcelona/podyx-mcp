@@ -1,6 +1,6 @@
 {
   "name": "podyx-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Community MCP server for Podyx studio booking, catalog, packages and reporting",
   "type": "module",
   "license": "MIT",

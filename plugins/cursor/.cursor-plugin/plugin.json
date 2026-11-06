@@ -1,6 +1,6 @@
 {
   "name": "podyx",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Podyx studio availability, bookings, packages, catalog and business reports",
   "license": "MIT",
   "mcpServers": "./mcp.json",
@@ -10,7 +10,7 @@
       "PODYX_API_KEY": {
         "type": "string",
         "title": "Podyx API key",
-        "description": "Studio Settings \u2192 API keys"
+        "description": "Studio Settings → API keys"
       },
       "PODYX_ENABLE_WRITES": {
         "type": "string",
