@@ -16,17 +16,13 @@ Normal feature merges update the pending release PR; they do not publish a relea
 
 The local repository must first be pushed to a GitHub repository with `main` as its release branch. No GitHub remote was configured when this pipeline was implemented, so creating PRs/releases has not yet been exercised against a real repository.
 
-Add repository Actions secret **`RELEASE_PLEASE_TOKEN`** with a fine-grained personal access token restricted to this repository and these repository permissions:
+No personal token or additional secret is required. The release job uses the short-lived **`GITHUB_TOKEN`** provided automatically by GitHub Actions. Its job-scoped permissions allow contents, issues, pull requests and explicit workflow dispatches.
 
-- Contents: read and write (release branch, tag and release).
-- Pull requests: read and write (create/update the release PR).
-- Issues: read and write (release lifecycle labels).
+Enable **Settings → Actions → General → Workflow permissions → Allow GitHub Actions to create and approve pull requests**. The workflow only creates/updates PRs; it never approves or merges them.
 
-Use the repository owner's approved automation identity and rotate/revoke the token as appropriate. Never commit the token. A GitHub App can replace the PAT by generating an installation token inside the workflow; this repository currently expects the PAT secret, not a manually stored short-lived App token.
+After Release Please creates or updates a release PR, the workflow explicitly sends `workflow_dispatch` for its same-repository release branch. That event can start checks using `GITHUB_TOKEN`, so no PAT is needed. Dispatched runs validate/package the release branch and cannot execute the push/main-only release job. GitHub may also display approval-required native PR runs; the explicit dispatch supplies automatic checks without relying on those runs.
 
-The built-in `GITHUB_TOKEN` is used only for same-run artifact upload, release asset attachment and safe lookups. It is deliberately **not** the release-PR author token: PRs created with it do not trigger normal PR workflows. A missing release token fails the release job with an explicit setup message, while ordinary PR checks do not need that secret.
-
-If repository/organization policy blocks bot-created PRs, enable the corresponding Actions permission or have an administrator permit the selected automation identity. See [Release Please authentication requirements](https://github.com/googleapis/release-please-action#github-credentials).
+See [GitHub workflow trigger rules](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow).
 
 ## Make checks mandatory before merge
 
@@ -69,4 +65,4 @@ If asset upload fails after Release Please has created the release, rerun the wo
 
 A superseded main run skips release management and leaves it to the newer commit's checks. Concurrent `main` runs are not cancelled halfway through publication; obsolete PR checks may be cancelled.
 
-Local validation can prove version updates, workflow syntax, artifact packaging and protocol startup. Creating the actual PR, triggering GitHub checks and publishing a real tag/release require the configured GitHub repository and token.
+Local validation can prove version updates, workflow syntax, artifact packaging and protocol startup. Creating the actual PR, triggering GitHub checks and publishing a real tag/release require the configured GitHub repository with Actions enabled.

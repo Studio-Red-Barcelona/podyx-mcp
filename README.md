@@ -77,7 +77,7 @@ Repository marketplaces are included for Cursor, Claude Code and OpenAI; build p
 
 ## Automated releases
 
-PRs and merges to `main` run tests on Node.js 22/24, enforce matching plugin versions and build/test all release archives. After successful main checks, Release Please opens a version/changelog PR. Merging that PR produces the GitHub tag and release with the tested archives. Configure the GitHub remote, `RELEASE_PLEASE_TOKEN` and branch rules once; see **[release pipeline and required checks](docs/releases.md)**.
+PRs and merges to `main` run tests on Node.js 22/24, enforce matching plugin versions and build/test all release archives. After successful main checks, Release Please opens a version/changelog PR. Merging that PR produces the GitHub tag and release with the tested archives. Configure the GitHub remote, allow Actions to create PRs, and set branch rules once; see **[release pipeline and required checks](docs/releases.md)**.
 
 ## Development and status
 

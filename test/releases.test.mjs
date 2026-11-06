@@ -9,6 +9,7 @@ import { checkVersions, pluginManifests, marketplaces } from '../scripts/version
 import { validTitle } from '../scripts/check-pr-title.mjs';
 import { releaseMatchesCommit } from '../scripts/upload-release-assets.mjs';
 import { version } from '../src/version.mjs';
+import { dispatchReleaseChecks } from '../scripts/dispatch-release-checks.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const readJson = async (file) => JSON.parse(await readFile(file, 'utf8'));
@@ -70,8 +71,26 @@ test('PRs and main run tests and packaging; release is gated behind both', async
   assert.deepEqual(workflow.jobs.release.needs, ['test', 'packages']);
   assert.equal(workflow.jobs.release.if, "github.event_name == 'push' && github.ref == 'refs/heads/main'");
   const release = workflow.jobs.release.steps.find((step) => step.uses?.startsWith('googleapis/release-please-action@'));
-  assert.equal(release.with.token, '${{ secrets.RELEASE_PLEASE_TOKEN }}');
+  assert.equal(release.with.token, '${{ github.token }}');
+  assert.equal(workflow.jobs.release.permissions.actions, 'write');
+  assert(workflow.jobs.release.steps.some((step) => step.run === 'node scripts/dispatch-release-checks.mjs'));
   assert.equal(release.if, "steps.current.outputs.ready == 'true'");
+});
+
+test('GITHUB_TOKEN explicitly dispatches checks only for same-repository release PRs', async () => {
+  const sent = [];
+  const fetchImpl = async (url, options) => {
+    sent.push({ url, options });
+    if (options.method === 'POST') return new Response(null, { status: 204 });
+    return json({ state: 'open', base: { ref: 'main' }, head: { repo: { full_name: 'owner/podyx-mcp' }, ref: 'release-please--branches--main' } });
+  };
+  await dispatchReleaseChecks({ repository: 'owner/podyx-mcp', token: 'fake', pullRequests: '[{"number":7}]', fetchImpl });
+  assert.equal(sent.length, 2);
+  assert.equal(JSON.parse(sent[1].options.body).ref, 'release-please--branches--main');
+  assert(sent[1].url.endsWith('/actions/workflows/test.yml/dispatches'));
+  await assert.rejects(dispatchReleaseChecks({ repository: 'owner/podyx-mcp', token: 'fake', pullRequests: '[{"number":7}]',
+    fetchImpl: async () => json({ state: 'open', base: { ref: 'main' }, head: { repo: { full_name: 'attacker/fork' }, ref: 'release-please--fork' } }),
+  }), /non-release PR/);
 });
 
 test('Conventional Commit PR titles accept release PRs and reject ambiguous titles', () => {
