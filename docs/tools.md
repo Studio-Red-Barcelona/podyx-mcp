@@ -1,12 +1,13 @@
 # Tool reference
 
-Generated from the vendored Podyx OpenAPI snapshots in `spec/`. 150 tools; 65 enabled by default.
+Generated from the vendored Podyx OpenAPI snapshots in `spec/`. 160 tools; 72 enabled by default.
 
 Arguments are grouped under `path`, `query`, and `body` according to the API contract. Writes additionally require `confirm: true` and a persisted UUID `idempotency_key`. Omit absent optional values; do not send null unless the schema permits it.
 
 | Tool | Mode | API route |
 |---|---|---|
 | `podyx_addon_quote` | Read / preview | `POST /api/v2/addon-purchases/quotes` |
+| `podyx_adjust_client_credit` | Write (opt-in) | `POST /api/v2/clients/{id}/credit-adjustments` |
 | `podyx_aftercare_accept_amendment` | Write (opt-in) | `POST /api/v2/sessions/{id}/amendments` |
 | `podyx_aftercare_addon` | Read / preview | `GET /api/v2/addon-purchases/{id}` |
 | `podyx_aftercare_amendment` | Read / preview | `GET /api/v2/amendments/{id}` |
@@ -57,6 +58,7 @@ Arguments are grouped under `path`, `query`, and `body` according to the API con
 | `podyx_create_external_checkout` | Write (opt-in) | `POST /api/v2/external-checkouts` |
 | `podyx_create_private_offer_bundle_plan` | Write (opt-in) | `POST /api/v2/bundle-plans/private-offers` |
 | `podyx_create_private_offer_subscription_plan` | Write (opt-in) | `POST /api/v2/subscription-plans/private-offers` |
+| `podyx_create_promo_code` | Write (opt-in) | `POST /api/v2/promo-codes` |
 | `podyx_create_room` | Write (opt-in) | `POST /api/v2/rooms` |
 | `podyx_create_service` | Write (opt-in) | `POST /api/v2/services` |
 | `podyx_create_setup` | Write (opt-in) | `POST /api/v2/setups` |
@@ -67,11 +69,13 @@ Arguments are grouped under `path`, `query`, and `body` according to the API con
 | `podyx_get_cancellation` | Read / preview | `GET /api/v2/cancellations/{id}` |
 | `podyx_get_checkout` | Read / preview | `GET /api/v2/checkouts/{id}` |
 | `podyx_get_client` | Read / preview | `GET /api/v2/clients/{id}` |
+| `podyx_get_client_credit_balance` | Read / preview | `GET /api/v2/clients/{id}/credits` |
 | `podyx_get_external_checkout` | Read / preview | `GET /api/v2/external-checkouts/{id}` |
 | `podyx_get_external_payment_report` | Read / preview | `GET /api/v2/external-payment-reports/{id}` |
 | `podyx_get_external_refund` | Read / preview | `GET /api/v2/external-refunds/{id}` |
 | `podyx_get_external_subscription_cycle` | Read / preview | `GET /api/v2/subscription-cycles/{id}` |
 | `podyx_get_member_bundle` | Read / preview | `GET /api/v2/member-bundles/{id}` |
+| `podyx_get_promo_code` | Read / preview | `GET /api/v2/promo-codes/{id}` |
 | `podyx_get_published_tour` | Read / preview | `GET /api/v2/studio-tours/published` |
 | `podyx_get_purchase` | Read / preview | `GET /api/v2/purchases/{id}` |
 | `podyx_get_room` | Read / preview | `GET /api/v2/rooms/{id}` |
@@ -81,10 +85,15 @@ Arguments are grouped under `path`, `query`, and `body` according to the API con
 | `podyx_get_subscription_plan` | Read / preview | `GET /api/v2/subscription-plans/{id}` |
 | `podyx_get_tour_availability` | Read / preview | `GET /api/v2/studio-tours/{id}/availability` |
 | `podyx_list_addon` | Read / preview | `GET /api/v2/addons` |
+| `podyx_list_bookings` | Read / preview | `GET /api/v2/bookings` |
 | `podyx_list_bundle_plan` | Read / preview | `GET /api/v2/bundle-plans` |
+| `podyx_list_client_credit_ledger` | Read / preview | `GET /api/v2/clients/{id}/credit-ledger` |
 | `podyx_list_external_refund_collections` | Read / preview | `GET /api/v2/external-checkouts/{id}/collections` |
+| `podyx_list_promo_codes` | Read / preview | `GET /api/v2/promo-codes` |
+| `podyx_list_purchases` | Read / preview | `GET /api/v2/purchases` |
 | `podyx_list_room` | Read / preview | `GET /api/v2/rooms` |
 | `podyx_list_service` | Read / preview | `GET /api/v2/services` |
+| `podyx_list_sessions` | Read / preview | `GET /api/v2/sessions` |
 | `podyx_list_setup` | Read / preview | `GET /api/v2/setups` |
 | `podyx_list_subscription_plan` | Read / preview | `GET /api/v2/subscription-plans` |
 | `podyx_packages_approve_bundle` | Write (opt-in) | `POST /api/v2/member-bundles/{id}/approvals` |
@@ -131,6 +140,7 @@ Arguments are grouped under `path`, `query`, and `body` according to the API con
 | `podyx_update_bundle_plan` | Write (opt-in) | `PATCH /api/v2/bundle-plans/{id}` |
 | `podyx_update_client` | Write (opt-in) | `PATCH /api/v2/clients/{id}` |
 | `podyx_update_private_offer_bundle_plan` | Write (opt-in) | `PATCH /api/v2/bundle-plans/{id}/private-offer` |
+| `podyx_update_promo_code` | Write (opt-in) | `PATCH /api/v2/promo-codes/{id}` |
 | `podyx_update_room` | Write (opt-in) | `PATCH /api/v2/rooms/{id}` |
 | `podyx_update_service` | Write (opt-in) | `PATCH /api/v2/services/{id}` |
 | `podyx_update_setup` | Write (opt-in) | `PATCH /api/v2/setups/{id}` |
